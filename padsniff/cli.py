@@ -17,11 +17,12 @@ def cli():
 
 
 @cli.command()
+@click.option('--port', '-p', default=8080)
 @click.option('--script', '-s', multiple=True)
-def run(script):
+def run(port, script):
     # load scripts before instantiating the proxy to allow the use of the `on` decorator
     for path in script:
         load_script(path)
 
-    proxy = Proxy(host='0.0.0.0', port=8888)
+    proxy = Proxy(host='0.0.0.0', port=port)
     proxy.run()
