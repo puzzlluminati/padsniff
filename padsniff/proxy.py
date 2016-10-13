@@ -1,3 +1,5 @@
+import logging
+
 from mitmproxy.controller import handler as flow_handler
 from mitmproxy.flow import FlowMaster, State
 from mitmproxy.models import decoded
@@ -6,6 +8,9 @@ from mitmproxy.proxy import ProxyConfig, ProxyServer
 
 from .constants import GUNGHO_API_ENDPOINT, GUNGHO_USER_AGENT
 from .structures import CaseInsensitiveDefaultDict
+
+
+log = logging.getLogger(__name__)
 
 
 class BaseProxy(FlowMaster):
@@ -19,10 +24,12 @@ class BaseProxy(FlowMaster):
 
     def run(self):
         try:
+            logging.info('Starting proxy on port %s.', self.options.listen_port)
             super().run()
         except KeyboardInterrupt:
             pass
         finally:
+            logging.info('Shutting down.')
             self.shutdown()
 
 
@@ -39,14 +46,26 @@ class Proxy(BaseProxy):
     def response(self, flow):
         request = flow.request
 
+        log.info('Received response from %s request to %s.', request.method, request.path)
+
         if request.headers.get('user-agent') == GUNGHO_USER_AGENT and request.path.startswith(GUNGHO_API_ENDPOINT):
+            log.info('Forwarding flow to routing.')
             self.route(flow)
 
 
     def on(self, action):
+        """
+        Register a function to be called when a response is received from a request to `action`.
+
+        The function will be called with the request and response. The response will not be received by the client
+        until the decorated function returns.
+
+        Read about possible actions on the padsniff wiki: https://bitbucket.org/necromanteion/padsniff/wiki/Home
+        """
         def wrapper(func):
             self.handlers[action].add(func)
             return func
+
         return wrapper
 
 
@@ -59,7 +78,10 @@ class Proxy(BaseProxy):
         funcs = self.handlers[action]
 
         for func in funcs:
-            func(request, response)
+            try:
+                func(request, response)
+            except:
+                log.exception('Error while executing %s.', func.__name__)
 
 
 def on(action, *, cls=Proxy):
