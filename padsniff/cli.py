@@ -6,15 +6,18 @@ import click
 from .proxy import Proxy
 
 
-def load_logging(level):
-    logging.basicConfig()
-    logging.getLogger().setLevel(level)
+log = logging.getLogger(__name__)
+
+
+def configure_logging(level):
+    logging.basicConfig(format='[%(levelname)s] :: %(message)s', level=level)
 
 
 def load_script(path):
     spec = spec_from_file_location('script', path)
     module = module_from_spec(spec)
     spec.loader.exec_module(module)
+    log.info('Loaded script %s.', path)
 
 
 @click.group()
@@ -28,7 +31,7 @@ def cli():
 @click.option('--script', '-s', multiple=True, type=click.Path(exists=True))
 def run(debug, port, script):
 
-    load_logging(logging.DEBUG if debug else logging.WARNING)
+    configure_logging(logging.DEBUG if debug else logging.WARNING)
 
     # load scripts before instantiating the proxy to allow the use of the `on` decorator
     for path in script:
