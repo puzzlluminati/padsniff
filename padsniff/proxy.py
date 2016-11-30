@@ -6,7 +6,7 @@ from mitmproxy.models import decoded
 from mitmproxy.options import Options
 from mitmproxy.proxy import ProxyConfig, ProxyServer
 
-from .constants import GUNGHO_API_ENDPOINT, GUNGHO_USER_AGENT
+from .constants import ALL, GUNGHO_API_ENDPOINT, GUNGHO_USER_AGENT
 from .structures import CaseInsensitiveDefaultDict
 
 
@@ -75,7 +75,7 @@ class Proxy(BaseProxy):
         """
         request, response = flow.request, flow.response
         action = request.query.get('action')
-        funcs = self.handlers[action]
+        funcs = self.handlers[action] | self.handlers[ALL]
 
         for func in funcs:
             try:
