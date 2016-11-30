@@ -3,6 +3,8 @@ machine:
     version: 3.5.2
 
 dependencies:
+  override:
+    - pip install .
   post:
     - pip install twine
 
