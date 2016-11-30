@@ -1,8 +1,11 @@
 from setuptools import setup
 
+with open('requirements.txt') as f:
+    requires = f.readlines()
+
 setup(
     name='padsniff',
-    version='0.9.2',
+    version='0.9.3',
     description='Command-line tool to sniff Puzzle & Dragons data.',
     url='https://bitbucket.org/necromanteion/padsniff',
     author='Will Medlar',
@@ -22,6 +25,7 @@ setup(
         'man-in-the-middle',
         'reverse engineering',
     ],
+    install_requires=requires,
     packages=['padsniff'],
     entry_points={
         'console_scripts': [
