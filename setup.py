@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='padsniff',
-    version='0.9.1',
+    version='0.9.2',
     description='Command-line tool to sniff Puzzle & Dragons data.',
     url='https://bitbucket.org/necromanteion/padsniff',
     author='Will Medlar',
