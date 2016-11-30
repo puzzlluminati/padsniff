@@ -2,10 +2,6 @@ machine:
   python:
     version: 3.5.2
 
-dependencies:
-  post:
-    - pip install twine
-
 test:
   override:
     - python -c "import padsniff"
@@ -15,4 +11,5 @@ deployment:
     tag: /v[0-9]+(\.[0-9]+)*/
     commands:
       - python setup.py sdist bdist_wheel
+      - pip install twine
       - twine upload dist/* --username $PYPI_USERNAME --password $PYPI_PASSWORD
