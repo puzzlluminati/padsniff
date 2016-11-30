@@ -10,4 +10,4 @@ deployment:
   release:
     tag: /v[0-9]+(\.[0-9]+)*/
     commands:
-      - echo "no deploy commands :)"
+      - python setup.py sdist bdist_wheel
