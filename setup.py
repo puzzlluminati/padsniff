@@ -22,10 +22,6 @@ setup(
         'man-in-the-middle',
         'reverse engineering',
     ],
-    install_requires=[
-        'click==6.6',
-        'mitmproxy==0.18.2',
-    ],
     packages=['padsniff'],
     entry_points={
         'console_scripts': [
