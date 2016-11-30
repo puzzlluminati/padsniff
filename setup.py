@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='padsniff',
-    version='0.9.0',
+    version='0.9.1',
     description='Command-line tool to sniff Puzzle & Dragons data.',
     url='https://bitbucket.org/necromanteion/padsniff',
     author='Will Medlar',
@@ -15,10 +15,13 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3 :: Only',
-        'Topic :: Communications :: Chat :: Internet Relay Chat',
         'Topic :: Games/Entertainment :: Puzzle Games',
     ],
-    keywords='irc puzzle dragons',
+    keywords=[
+        'puzzle & dragons',
+        'man-in-the-middle',
+        'reverse engineering',
+    ],
     install_requires=[
         'click==6.6',
         'mitmproxy==0.18.2',
