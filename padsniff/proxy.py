@@ -46,10 +46,10 @@ class Proxy(BaseProxy):
     def response(self, flow):
         request = flow.request
 
-        log.info('Received response from %s request to %s.', request.method, request.path)
+        log.debug('Received response from %s request to %s.', request.method, request.pretty_url)
 
         if request.headers.get('user-agent') == GUNGHO_USER_AGENT and request.path.startswith(GUNGHO_API_ENDPOINT):
-            log.info('Forwarding flow to routing.')
+            log.info('Captured %s request to %s. Forwarding flow to routing.', request.method, request.pretty_url)
             self.route(flow)
 
 

@@ -31,7 +31,7 @@ def cli():
 @click.option('--script', '-s', multiple=True, type=click.Path(exists=True))
 def run(debug, port, script):
 
-    configure_logging(logging.DEBUG if debug else logging.WARNING)
+    configure_logging(logging.INFO if debug else logging.WARNING)
 
     # load scripts before instantiating the proxy to allow the use of the `on` decorator
     for path in script:
