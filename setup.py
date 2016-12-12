@@ -1,7 +1,10 @@
 from setuptools import setup
 
 with open('requirements.txt') as f:
-    requires = f.readlines()
+    install_requires = f.readlines()
+
+with open('dev-requirements.txt') as f:
+    tests_require = install_requires + f.readlines()
 
 setup(
     name='padsniff',
@@ -25,7 +28,9 @@ setup(
         'man-in-the-middle',
         'reverse engineering',
     ],
-    install_requires=requires,
+    install_requires=install_requires,
+    setup_requires=['pytest-runner'],
+    tests_require=tests_require,
     packages=['padsniff'],
     entry_points={
         'console_scripts': [
