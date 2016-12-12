@@ -2,10 +2,6 @@ machine:
   python:
     version: 3.5.2
 
-test:
-  override:
-    - python -c "import padsniff"
-
 deployment:
   release:
     tag: /v[0-9]+(\.[0-9]+)*/
