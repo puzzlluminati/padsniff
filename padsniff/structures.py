@@ -12,7 +12,6 @@ class CaseInsensitiveDefaultDict(MutableMapping):
     @staticmethod
     def _transform(key):
         """Supports non-string keys."""
-
         try:
             return key.casefold()
 
@@ -22,6 +21,9 @@ class CaseInsensitiveDefaultDict(MutableMapping):
 
     def __init__(self, default_factory, data=None, **kwargs):
         self._dict = {}
+
+        if not callable(default_factory) and default_factory is not None:
+            raise TypeError('default factory must be callable or None')
 
         self.default_factory = default_factory
 
@@ -68,11 +70,11 @@ class CaseInsensitiveDefaultDict(MutableMapping):
 
 
     def __repr__(self):
-        line = '{0.__class__.__qualname__}('
-        line += (repr(None) if self.default_factory is None
-                 else '{0.default_factory.__qualname__}')
-        line += ', {1})'
-        return line.format(self, dict(self.items()))
+        return (
+            f'{self.__class__.__qualname__}('
+            f'{getattr(self.default_factory, "__qualname__", repr(self.default_factory))}, '
+            f'{dict(self.items())})'
+        )
 
 
     def copy(self):
