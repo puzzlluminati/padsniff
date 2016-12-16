@@ -70,11 +70,13 @@ class CaseInsensitiveDefaultDict(MutableMapping):
 
 
     def __repr__(self):
-        return (
-            f'{self.__class__.__qualname__}('
-            f'{getattr(self.default_factory, "__qualname__", repr(self.default_factory))}, '
-            f'{dict(self.items())})'
+        rep = '{qualname}(default_factory, contents)'.format(
+            qualname=self.__class__.__qualname__,
+            default_factory=getattr(self.default_factory, '__qualname__', repr(self.default_factory)),
+            contents=dict(self.items()),
         )
+
+        return rep
 
 
     def copy(self):
