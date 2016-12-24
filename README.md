@@ -5,9 +5,9 @@ import padsniff
 import json
 
 @padsniff.on(action='get_player_data')
-def log_plus_eggs(request, response):
+def hello(request, response):
     username = json.loads(response.content.decode())['name']
-    print('hello, %s!' % name)
+    print('Hello, %s!' % username)
 
 if __name__ == '__main__':
     proxy = padsniff.Proxy()
