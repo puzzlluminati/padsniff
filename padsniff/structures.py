@@ -80,7 +80,9 @@ class CaseInsensitiveDefaultDict(MutableMapping):
 
 
     def copy(self):
-        return CaseInsensitiveDefaultDict(self.default_factory, self._dict.values())
+        """Create a shallow copy of `self`."""
+        cls = type(self)
+        return cls(self.default_factory, self._dict.values())
 
 
     def get(self, key, default=None):

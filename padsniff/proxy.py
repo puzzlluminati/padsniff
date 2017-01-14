@@ -38,7 +38,7 @@ class Proxy(BaseProxy):
 
     def __init__(self, host='0.0.0.0', port=8080):
         super().__init__(listen_host=host, listen_port=port, mode='transparent')
-        self.handlers = Proxy.handlers.copy()
+        self.handlers = type(self).handlers.copy()
 
 
     @flow_handler
