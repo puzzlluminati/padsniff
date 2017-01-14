@@ -90,4 +90,10 @@ def is_gungho(request):
 
 
 def on(action, *, cls=Proxy):
+    """
+    Register a function to be called when a response is received from a request to `action`.
+
+    This is a shortcut for `Proxy.on`, useful for registering functions before instantiating
+    a `Proxy` object.
+    """
     return cls.on(cls, action)
