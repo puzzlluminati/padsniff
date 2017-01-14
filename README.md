@@ -31,6 +31,13 @@ if __name__ == '__main__':
 
 ## Installation
 
+Padsniff requires Python 3.5+. I recommend using [pyenv](https://github.com/yyuu/pyenv) to install this if you don't already have it.
+
+```bash
+$ pyenv update && pyenv install 3.5.2
+$ pyenv shell 3.5.2
+```
+
 ### OSX
 
 Apple removed the OpenSSL headers in _El Capitan_, so you'll have to set some environment variables before installing `padsniff`'s dependencies.
@@ -40,6 +47,8 @@ $ brew install openssl
 $ export ARCHFLAGS="-arch x86_64" LDFLAGS="-L/usr/local/opt/openssl/lib" CFLAGS="-I/usr/local/opt/openssl/include"
 $ pip install padsniff
 ```
+
+Padsniff depends on mitmproxy's transparent proxying capabilities. Follow their [instructions](http://docs.mitmproxy.org/en/stable/transparent/osx.html) to set up your device.
 
 ### Development
 
