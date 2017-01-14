@@ -22,7 +22,7 @@ class CaseInsensitiveDefaultDict(MutableMapping):
     def __init__(self, default_factory, data=None, **kwargs):
         self._dict = {}
 
-        if not callable(default_factory) and default_factory is not None:
+        if default_factory is not None and not callable(default_factory):
             raise TypeError('default factory must be callable or None')
 
         self.default_factory = default_factory
