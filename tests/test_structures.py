@@ -94,6 +94,14 @@ class TestCaseInsensitiveDefaultDict:
             d[key]
 
 
+    def test_repr(self):
+        d = CaseInsensitiveDefaultDict(default_factory=int)
+        assert repr(d) == 'CaseInsensitiveDefaultDict(int, {})'
+
+        d.update(A=1)
+        assert repr(d) == "CaseInsensitiveDefaultDict(int, {'A': 1})"
+
+
     def test_copy(self):
         d = CaseInsensitiveDefaultDict(default_factory=None, a=1, b=2, c=3)
 
