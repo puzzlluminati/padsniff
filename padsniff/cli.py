@@ -9,7 +9,8 @@ from .proxy import Proxy
 log = logging.getLogger(__name__)
 
 
-def configure_logging(level):
+def configure_logging(verbosity):
+    level = logging.ERROR - verbosity * 10
     logging.basicConfig(format='[%(levelname)s] :: %(message)s', level=level)
 
 
@@ -26,15 +27,14 @@ def cli():
 
 
 @cli.command()
-@click.option('--debug', '-d', default=False, is_flag=True)
 @click.option('--port', '-p', default=8080)
-@click.option('--script', '-s', multiple=True, type=click.Path(exists=True))
-def run(debug, port, script):
-
-    configure_logging(logging.INFO if debug else logging.WARNING)
+@click.option('--script', '-s', 'scripts', multiple=True, type=click.Path(exists=True))
+@click.option('--verbose', '-v', 'verbosity', count=True)
+def run(port, scripts, verbosity):
+    configure_logging(verbosity)
 
     # load scripts before instantiating the proxy to allow the use of the `on` decorator
-    for path in script:
+    for path in scripts:
         load_script(path)
 
     proxy = Proxy(host='0.0.0.0', port=port)
