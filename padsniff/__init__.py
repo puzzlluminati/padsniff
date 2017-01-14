@@ -2,4 +2,8 @@ import logging
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
-from .proxy import Proxy, on
+from .proxy import (
+    is_gungho,
+    on,
+    Proxy,
+)

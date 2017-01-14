@@ -1,5 +1,6 @@
 from padsniff import (
     constants,
+    is_gungho,
     on,
     Proxy,
 )
@@ -105,3 +106,21 @@ def test_on_decorator(mocker):
             pass
 
         assert mock.called_once_with(Proxy, func2)
+
+
+def test_is_gungho(flow):
+    flow.request.headers['user-agent'] = constants.GUNGHO_USER_AGENT
+    flow.request.path = constants.GUNGHO_API_ENDPOINT
+    assert is_gungho(flow.request)
+
+    flow.request.headers['user-agent'] = 'PadsniffTesting'
+    flow.request.path = constants.GUNGHO_API_ENDPOINT
+    assert not is_gungho(flow.request)
+
+    flow.request.headers['user-agent'] = constants.GUNGHO_USER_AGENT
+    flow.request.path = '/path/to/success'
+    assert not is_gungho(flow.request)
+
+    flow.request.headers['user-agent'] = 'PadsniffTesting'
+    flow.request.path = '/path/to/success'
+    assert not is_gungho(flow.request)

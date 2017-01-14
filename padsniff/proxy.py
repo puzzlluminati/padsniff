@@ -47,7 +47,7 @@ class Proxy(BaseProxy):
 
         log.debug('Received response from %s request to %s.', request.method, request.pretty_url)
 
-        if request.headers.get('user-agent') == GUNGHO_USER_AGENT and request.path.startswith(GUNGHO_API_ENDPOINT):
+        if is_gungho(request):
             log.info('Captured %s request to %s. Forwarding flow to routing.', request.method, request.pretty_url)
             self.route(flow)
 
@@ -81,6 +81,12 @@ class Proxy(BaseProxy):
                 func(request, response)
             except:
                 log.exception('Error while executing %s.', func.__name__)
+
+
+def is_gungho(request):
+    """Validate that `request` originated from a GungHo app."""
+    return (request.headers.get('user-agent') == GUNGHO_USER_AGENT and
+            request.path.startswith(GUNGHO_API_ENDPOINT))
 
 
 def on(action, *, cls=Proxy):
