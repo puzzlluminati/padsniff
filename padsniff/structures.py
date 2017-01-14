@@ -34,12 +34,15 @@ class CaseInsensitiveDefaultDict(MutableMapping):
 
 
     def __setitem__(self, key, value):
-        self._dict[self._transform(key)] = (key, value)
+        lookup_key = self._transform(key)
+        self._dict[lookup_key] = (key, value)
 
 
     def __getitem__(self, key):
+        lookup_key = self._transform(key)
+
         try:
-            origkey, value = self._dict[self._transform(key)]
+            orig_key, value = self._dict[lookup_key]
 
         except KeyError:
             # call to __missing__ must be explicit because of overloading __getitem__
@@ -49,15 +52,27 @@ class CaseInsensitiveDefaultDict(MutableMapping):
 
 
     def __delitem__(self, key):
-        del self._dict[self._transform(key)]
+        lookup_key = self._transform(key)
+
+        try:
+            del self._dict[lookup_key]
+
+        except KeyError:
+            raise KeyError(key)
 
 
     def __iter__(self):
-        return (origkey for origkey, value in self._dict.values())
+        return (orig_key for orig_key, value in self._dict.values())
 
 
     def __len__(self):
         return len(self._dict)
+
+
+    def __contains__(self, key):
+        # MutableMapping.__contains__ depends on __getitem__ raising a KeyError for missing keys
+        # we have to override this behavior to prevent from always returning True unless default_factory is None
+        return self._transform(key) in self._dict
 
 
     def __missing__(self, key):
@@ -70,7 +85,7 @@ class CaseInsensitiveDefaultDict(MutableMapping):
 
 
     def __repr__(self):
-        rep = '{qualname}(default_factory, contents)'.format(
+        rep = '{qualname}({default_factory}, {contents})'.format(
             qualname=self.__class__.__qualname__,
             default_factory=getattr(self.default_factory, '__qualname__', repr(self.default_factory)),
             contents=dict(self.items()),
@@ -85,18 +100,37 @@ class CaseInsensitiveDefaultDict(MutableMapping):
         return cls(self.default_factory, self._dict.values())
 
 
+    @classmethod
+    def fromkeys(cls, default_factory, seq, value=None):
+        """Create a new mapping with each key in `seq` set to `value`."""
+        return cls(default_factory, dict.fromkeys(seq, value))
+
+
     def get(self, key, default=None):
+        """
+        Return the value associated with `key`, or `default` if `key` is not found.
 
-        try:
-            # _dict.get avoids __getitem__'s defaultdict-like behavior
-            origkey, value = self._dict.get(self._transform(key))
+        This method does not invoke the default factory.
+        """
+        lookup_key = self._transform(key)
+        default_pair = (key, default)
 
-        except TypeError:
-            value = default
+        # _dict.get avoids __getitem__'s defaultdict-like behavior
+        orig_key, value = self._dict.get(lookup_key, default_pair)
 
         return value
 
 
-    @classmethod
-    def fromkeys(cls, default_factory, seq, value=None):
-        return cls(default_factory, dict.fromkeys(seq, value))
+    def setdefault(self, key, default=None):
+        """
+        Return the value associated with `key`, setting it to `default` if `key` is not found.
+
+        This method does not invoke the default factory.
+        """
+        lookup_key = self._transform(key)
+        default_pair = (key, default)
+
+        # _dict.setdefault avoids __getitems__'s defaultdict-like behavior
+        orig_key, value = self._dict.setdefault(lookup_key, default_pair)
+
+        return value

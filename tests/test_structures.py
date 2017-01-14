@@ -105,9 +105,38 @@ class TestCaseInsensitiveDefaultDict:
         d = CaseInsensitiveDefaultDict(default_factory=mock_default_factory)
         key = 'key'
         obj = object()
+        d[key] = obj
 
-        assert d.get(key, obj) is obj
+        assert d.get(key) is obj
         assert mock_default_factory.not_called()
+
+        key2 = 'key2'
+        obj2 = object()
+
+        assert d.get(key2) is None
+        assert d.get(key2, obj2) is obj2
+        assert key2 not in d
+        assert mock_default_factory.not_called()
+
+
+    def test_setdefault(self, mocker):
+        mock_default_factory = mocker.Mock()
+        d = CaseInsensitiveDefaultDict(default_factory=mock_default_factory)
+        key = 'key'
+        obj = object()
+        d[key] = obj
+
+        assert d.setdefault(key) is obj
+        assert mock_default_factory.not_called()
+
+        key2 = 'key2'
+        obj2 = object()
+
+        assert d.setdefault(key2) is None
+        assert d.setdefault(key2, obj2) is None
+        assert key2 in d
+        assert mock_default_factory.not_called()
+
 
 
     def test_fromkeys(self):
