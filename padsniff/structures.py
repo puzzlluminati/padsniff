@@ -45,7 +45,7 @@ class CaseInsensitiveDefaultDict(MutableMapping):
             orig_key, value = self._dict[lookup_key]
 
         except KeyError:
-            # call to __missing__ must be explicit because of overloading __getitem__
+            # call to __missing__ must be explicit because of overriding __getitem__
             value = self.__missing__(key)
 
         return value
