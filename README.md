@@ -5,6 +5,15 @@
 
 ## Quickstart
 
+Padsniff can be used as either a cli:
+
+```bash
+$ padsniff run --port 8080 --script examples/log_plus_eggs.py
+runs:   1 | hp:   1 | atk:   1 | rcv:   2
+```
+
+... or as a library!
+
 ```python
 import padsniff
 import json
