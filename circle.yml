@@ -1,0 +1,15 @@
+machine:
+  python:
+    version: 3.5.2
+
+test:
+  override:
+    - python setup.py test
+
+deployment:
+  release:
+    tag: /v[0-9]+(\.[0-9]+)*/
+    commands:
+      - pip install twine wheel
+      - python setup.py sdist bdist_wheel
+      - twine upload dist/* --username $PYPI_USERNAME --password $PYPI_PASSWORD
