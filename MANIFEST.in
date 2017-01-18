@@ -1,2 +1,3 @@
-include README.md *.txt
+include *.txt
+include README.md
 recursive-include examples *.py
