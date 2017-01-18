@@ -1,5 +1,8 @@
 from setuptools import setup
 
+with open('README.md') as f:
+    readme = f.read()
+
 with open('requirements.txt') as f:
     install_requires = f.readlines()
 
@@ -8,13 +11,14 @@ with open('dev-requirements.txt') as f:
 
 setup(
     name='padsniff',
-    version='0.9.3',
+    version='1.0.0',
     description='Command-line tool to sniff Puzzle & Dragons data.',
+    long_description=readme,
     url='https://bitbucket.org/necromanteion/padsniff',
     author='Will Medlar',
     author_email='wmmedlar@gmail.com',
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Environment :: Console',
         'Intended Audience :: Developers',
         'Programming Language :: Python :: 3',
