@@ -70,6 +70,8 @@ $ pip install padsniff
 
 This will also set up your environment to support [click](http://click.pocoo.org/), the library that powers padsniff's command line interface.
 
+Padsniff depends on mitmproxy's transparent proxying capabilites. Follow their [instructions](http://docs.mitmproxy.org/en/stable/transparent/linux.html) to set up your device.
+
 ### Development
 
 ```shell
