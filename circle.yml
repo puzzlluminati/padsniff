@@ -2,6 +2,10 @@ machine:
   python:
     version: 3.5.2
 
+dependencies:
+  pre:
+    - sudo apt-get install -y pandoc
+
 test:
   override:
     - python setup.py test
