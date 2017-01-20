@@ -14,6 +14,7 @@ setup(
     url='https://bitbucket.org/necromanteion/padsniff',
     author='Will Medlar',
     author_email='wmmedlar@gmail.com',
+    license='MIT',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Console',
