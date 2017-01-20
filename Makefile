@@ -32,7 +32,8 @@ install:
 
 publish: build
 	pip install twine
-	twine upload dist/* -u $(PYPI_USERNAME) -p $(PYPI_PASSWORD) -r $(PYPI_REPOSITORY)
+	for f in dist/*; do twine register "$$f" $(ARGS); done
+	twine upload dist/* $(ARGS)
 
 test:
 	python setup.py test
