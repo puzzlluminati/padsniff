@@ -1,8 +1,5 @@
 from setuptools import setup
 
-with open('README.md') as f:
-    readme = f.read()
-
 with open('requirements.txt') as f:
     install_requires = f.readlines()
 
@@ -13,10 +10,11 @@ setup(
     name='padsniff',
     version='1.0.0',
     description='Command-line tool to sniff Puzzle & Dragons data.',
-    long_description=readme,
+    long_description_markdown_filename='README.md',
     url='https://bitbucket.org/necromanteion/padsniff',
     author='Will Medlar',
     author_email='wmmedlar@gmail.com',
+    license='MIT',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Console',
@@ -33,7 +31,11 @@ setup(
         'reverse engineering',
     ],
     install_requires=install_requires,
-    setup_requires=['pytest-runner'],
+    setup_requires=[
+        'pypandoc',
+        'pytest-runner',
+        'setuptools-markdown',
+    ],
     tests_require=tests_require,
     packages=['padsniff'],
     entry_points={
