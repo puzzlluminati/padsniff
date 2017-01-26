@@ -7,7 +7,7 @@ from mitmproxy.proxy import ProxyConfig, ProxyServer
 
 from .constants import ALL, GUNGHO_API_ENDPOINT, GUNGHO_USER_AGENT
 from .structures import CaseInsensitiveDefaultDict
-from .threads import threaded
+from .parallel import parallelize
 
 
 log = logging.getLogger(__name__)
@@ -53,7 +53,7 @@ class Proxy(BaseProxy):
             self.route(flow)
 
 
-    def on(self, action, *, blocking=True):
+    def on(self, action, *, blocking=False):
         """
         Register a function to be called when a response is received from a request to `action`.
 
@@ -63,7 +63,7 @@ class Proxy(BaseProxy):
         Read about possible actions on the padsniff wiki: https://bitbucket.org/necromanteion/padsniff/wiki/Home
         """
         def wrapper(func):
-            self.handlers[action].add(func if blocking else threaded(func))
+            self.handlers[action].add(func if blocking else parallelize(func))
             return func
 
         return wrapper
@@ -90,7 +90,7 @@ def is_gungho(request):
             request.path.startswith(GUNGHO_API_ENDPOINT))
 
 
-def on(action, *, blocking=True, cls=Proxy):
+def on(action, *, blocking=False, cls=Proxy):
     """
     Register a function to be called when a response is received from a request to `action`.
 
