@@ -1,9 +1,4 @@
-from padsniff import (
-    constants,
-    is_gungho,
-    on,
-    Proxy,
-)
+from padsniff import constants, is_gungho, on, parallelize, Proxy
 
 from pytest import fixture
 
@@ -34,13 +29,14 @@ class TestProxy:
 
         assert not proxy.handlers[endpoint]
 
-        @proxy.on(endpoint)
+        @proxy.on(endpoint, blocking=True)
         def func():
             pass
 
         assert func in proxy.handlers[endpoint]
         assert func not in Proxy.handlers[endpoint]
-        assert proxy.on('endpoint2')(func) is func
+        assert proxy.on('endpoint2', blocking=True)(func) is func
+        assert proxy.on('endpoint2', blocking=False)(func) is func
 
 
     def test_response_filtering(self, mocker, flow):
@@ -89,11 +85,11 @@ class TestProxy:
         assert func2.not_called()
 
 
-def test_on_decorator(mocker):
+def test_blocking_on_decorator(mocker):
     endpoint = 'endpoint'
     proxy = Proxy()
 
-    @on(endpoint)
+    @on(endpoint, blocking=True)
     def func1():
         pass
 
@@ -101,11 +97,11 @@ def test_on_decorator(mocker):
     assert func1 not in proxy.handlers[endpoint]
 
     with mocker.patch('padsniff.proxy.Proxy.on') as mock:
-        @on(endpoint)
+        @on(endpoint, blocking=True)
         def func2():
             pass
 
-        assert mock.called_once_with(Proxy, func2)
+        assert mock.called_once_with(Proxy, func2, blocking=True)
 
 
 def test_is_gungho(flow):
