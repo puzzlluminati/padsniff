@@ -1,3 +1,19 @@
+help:
+	@ echo 'Automated development tasks for padsniff.                                      '
+	@ echo '                                                                               '
+	@ echo 'Usage:                                                                         '
+	@ echo '    make build         Build source and wheel distributions.                   '
+	@ echo '    make build-source  Build only a source distribution.                       '
+	@ echo '    make build-wheel   Build only a wheel distribution.                        '
+	@ echo '    make clean         Clean build and cache files.                            '
+	@ echo '    make clean-build   Clean only build files.                                 '
+	@ echo '    make clean-cache   Clean only cache files.                                 '
+	@ echo '    make develop       Install package in editable mode with dev dependencies. '
+	@ echo '    make install       Install package with runtime dependencies.              '
+	@ echo '    make publish       Build source and wheel distributions and upload to pypi.'
+	@ echo '    make help          Show this message.                                      '
+	@ echo '                                                                               '
+
 build: clean-build build-source build-wheel
 
 build-source:
@@ -33,4 +49,5 @@ publish: build
 test:
 	python setup.py test
 
-.PHONY: build build-source build-wheel clean clean-build clean-cache develop install publish test
+.DEFAULT: help
+.PHONY: help build build-source build-wheel clean clean-build clean-cache develop install publish test
