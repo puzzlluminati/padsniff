@@ -1,5 +1,3 @@
-.PHONY: build
-
 build: clean-build build-source build-wheel
 
 build-source:
@@ -22,18 +20,19 @@ clean-cache:
 	find . -name '__pycache__' -exec rm -rf {} +
 
 develop:
-	pip install -r requirements.txt
-	pip install -r dev-requirements.txt
 	pip install -e .
+	pip install -r dev-requirements.txt
 
 install:
-	pip install -r requirements.txt
-	python setup.py install
+	pip install .
 
 publish: build
 	pip install twine
-	for f in dist/*; do twine register "$$f" $(ARGS); done
-	twine upload dist/* $(ARGS)
+	$(foreach FILE,$(wildcard dist/*),\
+		twine register $(FILE);)
+	twine upload --skip-existing dist/*
 
 test:
 	python setup.py test
+
+.PHONY: build build-source build-wheel clean clean-build clean-cache develop install publish test
