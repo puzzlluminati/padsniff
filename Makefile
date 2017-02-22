@@ -28,8 +28,6 @@ install:
 
 publish: build
 	pip install twine
-	$(foreach FILE,$(wildcard dist/*),\
-		twine register $(FILE);)
 	twine upload --skip-existing dist/*
 
 test:
