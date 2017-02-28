@@ -1,3 +1,4 @@
+from queue import Queue
 from threading import enumerate as all_threads, main_thread, Event, Thread
 from time import sleep
 
@@ -82,3 +83,24 @@ def test_parallellize_with_args(mocker):
         kwargs=kwargs,
     )
     assert mock.start.called_once()
+
+
+def test_parallelize_thread_safe_args():
+    """Tests that arguments passed to parallelize-decorated function are thread-safe."""
+    queue = Queue()
+    mutable_arg = []
+    mutable_kwarg = {}
+
+    @parallelize
+    def func(arg, kwarg):
+        queue.put(arg)
+        queue.put(kwarg)
+
+    func(mutable_arg, kwarg=mutable_kwarg)
+    thread_arg = queue.get()
+    thread_kwarg = queue.get()
+
+    assert thread_arg == mutable_arg
+    assert thread_arg is not mutable_arg
+    assert thread_kwarg == mutable_kwarg
+    assert thread_kwarg is not mutable_kwarg
