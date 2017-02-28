@@ -4,16 +4,18 @@ machine:
 
 dependencies:
   pre:
-    - sudo apt-get install -y pandoc
+    - sudo apt-get install -y make pandoc
 
 test:
   override:
-    - python setup.py test
+    - make test
 
 deployment:
   release:
     tag: /v[0-9]+(\.[0-9]+)*/
     commands:
-      - pip install twine wheel
-      - python setup.py sdist bdist_wheel
-      - twine upload dist/* --username $PYPI_USERNAME --password $PYPI_PASSWORD
+      - make publish
+  testing:
+    branch: develop
+    commands:
+      - make publish TWINE_REPOSITORY=pypitest
