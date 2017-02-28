@@ -1,3 +1,4 @@
+from copy import deepcopy
 from threading import Thread
 from weakref import WeakSet
 
@@ -19,6 +20,9 @@ def parallelize(func, *, cls=HandlerThread):
 
     `cls` can be any callable that implements a threading.Thread-like
     signature and a start method, including multiprocessing.Process.
+
+    Arguments passed to the decorated function are deep-copied to
+    allow for thread-safe behavior.
     """
     qualname = getattr(func, '__qualname__', None)
 
@@ -27,8 +31,8 @@ def parallelize(func, *, cls=HandlerThread):
         t = cls(
             target=func,
             name=qualname,
-            args=args,
-            kwargs=kwargs,
+            args=deepcopy(args),
+            kwargs=deepcopy(kwargs),
         )
         t.start()
 
