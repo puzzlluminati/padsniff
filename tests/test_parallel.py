@@ -49,6 +49,11 @@ def test_parallelize_nonblocking():
     def wait_until_event():
         event.wait()
 
+    # test that decorator sets the __wrapped__ attribute
+    # mimicking functools.wraps' behavior
+    assert parallelize(wait_until_event).__wrapped__ is wait_until_event
+
+    # test that decorated function is run without blocking the main thread
     parallelize(wait_until_event)()
 
     assert len(all_threads()) == 2

@@ -20,14 +20,19 @@ def parallelize(func, *, cls=HandlerThread):
     `cls` can be any callable that implements a threading.Thread-like
     signature and a start method, including multiprocessing.Process.
     """
+    qualname = getattr(func, '__qualname__', None)
 
     def run(*args, **kwargs):
+        """Wraps execution of %s(*args, **kwargs) in a thread.""" % qualname
         t = cls(
             target=func,
-            name=getattr(func, '__qualname__', None),
+            name=qualname,
             args=args,
-            kwargs=kwargs
+            kwargs=kwargs,
         )
         t.start()
+
+    # apply __wrapped__ attr to be consistent with functools.wraps
+    run.__wrapped__ = getattr(func, '__wrapped__', func)
 
     return run
