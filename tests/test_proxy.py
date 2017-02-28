@@ -17,26 +17,40 @@ class TestProxy:
         host, port = '1.2.3.4', 12345
         proxy = Proxy(host=host, port=port)
 
+        # test that parent class initializes with proper arguments
         assert proxy.options.listen_host == host
         assert proxy.options.listen_port == port
         assert proxy.options.mode == 'transparent'
+
+        # test that the handlers are equivalent, but not the same reference
         assert proxy.handlers == Proxy.handlers
+        assert proxy.handlers is not Proxy.handlers
 
 
-    def test_on_decorator(self):
+    def test_inst_on_decorator(self, mocker):
+        """Test basic functionality of the class-level on decorator."""
         endpoint = 'endpoint'
         proxy = Proxy()
 
-        assert not proxy.handlers[endpoint]
-
+        # test that instance decorator adds only to instance variable
         @proxy.on(endpoint, blocking=True)
         def func():
             pass
 
         assert func in proxy.handlers[endpoint]
         assert func not in Proxy.handlers[endpoint]
-        assert proxy.on('endpoint2', blocking=True)(func) is func
-        assert proxy.on('endpoint2', blocking=False)(func) is func
+
+        # test that padsniff.parallel.parallelize is only called for blocking=False
+        with mocker.patch('padsniff.parallel.parallelize') as mock:
+            proxy.on(endpoint, blocking=True)(func)
+            assert mock.not_called()
+
+            proxy.on(endpoint, blocking=False)(func)
+            assert mock.called_once_with(func)
+
+        # test that decorated function is returned invariant
+        assert proxy.on(endpoint, blocking=True)(func) is func
+        assert proxy.on(endpoint, blocking=False)(func) is func
 
 
     def test_response_filtering(self, mocker, flow):
@@ -85,23 +99,38 @@ class TestProxy:
         assert func2.not_called()
 
 
-def test_blocking_on_decorator(mocker):
+def test_on_decorator(mocker):
+    """Test basic functionality of the module-level on decorator."""
     endpoint = 'endpoint'
     proxy = Proxy()
 
+    # test that module-level decorator adds only to class variable
     @on(endpoint, blocking=True)
-    def func1():
+    def func():
         pass
 
-    assert func1 in Proxy.handlers[endpoint]
-    assert func1 not in proxy.handlers[endpoint]
+    assert func in Proxy.handlers[endpoint]
+    assert func not in proxy.handlers[endpoint]
 
-    with mocker.patch('padsniff.proxy.Proxy.on') as mock:
-        @on(endpoint, blocking=True)
-        def func2():
-            pass
+    # test that padsniff.parallel.parallelize is only called for blocking=False
+    with mocker.patch('padsniff.parallel.parallelize') as mock:
+        on(endpoint, blocking=True)(func)
+        assert mock.not_called(func)
 
-        assert mock.called_once_with(Proxy, func2, blocking=True)
+        on(endpoint, blocking=False)(func)
+        assert mock.called_once_with(func)
+
+    # test that decorated function is returned invariant
+    assert on(endpoint, blocking=True)(func) is func
+    assert on(endpoint, blocking=False)(func) is func
+
+    # test that an arbitrary class can be specified
+    class NewProxy:
+        on = mocker.Mock()
+
+    on(endpoint, blocking=True, cls=NewProxy)
+
+    assert NewProxy.on.called_once_with(endpoint, blocking=True)
 
 
 def test_is_gungho(flow):
