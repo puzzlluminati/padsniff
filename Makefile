@@ -5,6 +5,9 @@ help:
 	@ echo '    make build         Build source and wheel distributions.                   '
 	@ echo '    make build-source  Build only a source distribution.                       '
 	@ echo '    make build-wheel   Build only a wheel distribution.                        '
+	@ echo '    make bump-major    Increment package major version.                        '
+	@ echo '    make bump-minor    Increment package minor version.                        '
+	@ echo '    make bump-patch    Increment package patch version.                        '
 	@ echo '    make clean         Clean build and cache files.                            '
 	@ echo '    make clean-build   Clean only build files.                                 '
 	@ echo '    make clean-cache   Clean only cache files.                                 '
@@ -22,6 +25,13 @@ build-source:
 build-wheel:
 	pip install wheel
 	python setup.py bdist_wheel
+
+.bump-%:
+	bumpversion $* setup.py padsniff/__init__.py
+
+bump-major: .bump-major
+bump-minor: .bump-minor
+bump-patch: .bump-patch
 
 clean: clean-build clean-cache
 
