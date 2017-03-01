@@ -1,7 +1,7 @@
 import logging
 
 from mitmproxy.controller import handler as flow_handler
-from mitmproxy.flow import Master as FlowMaster
+from mitmproxy.master import Master as FlowMaster
 from mitmproxy.options import Options
 from mitmproxy.proxy import ProxyConfig, ProxyServer
 
