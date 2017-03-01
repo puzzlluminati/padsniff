@@ -22,6 +22,7 @@ def load_script(path):
 
 
 @click.group()
+@click.version_option(message='%(version)s')
 def cli():
     pass
 
