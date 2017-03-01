@@ -1,7 +1,7 @@
 import logging
 
 from mitmproxy.controller import handler as flow_handler
-from mitmproxy.flow import FlowMaster, State
+from mitmproxy.flow import Master as FlowMaster
 from mitmproxy.options import Options
 from mitmproxy.proxy import ProxyConfig, ProxyServer
 
@@ -19,7 +19,7 @@ class BaseProxy(FlowMaster):
     def __init__(self, **options):
         opts = Options(**options)
         server = ProxyServer(ProxyConfig(opts))
-        super().__init__(opts, server, State())
+        super().__init__(opts, server)
 
 
     def run(self):
