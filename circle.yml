@@ -15,7 +15,3 @@ deployment:
     tag: /v[0-9]+(\.[0-9]+)*/
     commands:
       - make publish
-  testing:
-    branch: develop
-    commands:
-      - make publish TWINE_REPOSITORY=pypitest
