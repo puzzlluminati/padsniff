@@ -22,15 +22,19 @@ def load_script(path):
 
 
 @click.group()
+@click.version_option(message='%(version)s')
 def cli():
-    pass
+    """Padsniff: A Puzzle & Dragons HTTP Sniffer"""
 
 
 @cli.command()
-@click.option('--port', '-p', default=8080)
-@click.option('--script', '-s', 'scripts', multiple=True, type=click.Path(exists=True))
-@click.option('--verbose', '-v', 'verbosity', count=True)
+@click.option('--port', '-p', default=8080, help='Proxy service port.')
+@click.option('--script', '-s', 'scripts', multiple=True, type=click.Path(exists=True),
+              help='Load a Python script containing a callback. Can be supplied multiple times.')
+@click.option('--verbose', '-v', 'verbosity', count=True,
+              help='Increase logging level (default: ERROR). Can be supplied multiple times.')
 def run(port, scripts, verbosity):
+    """Run the proxy service."""
     configure_logging(verbosity)
 
     # load scripts before instantiating the proxy to allow the use of the `on` decorator

@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import find_packages, setup
 
 with open('requirements.txt') as f:
     install_requires = f.readlines()
@@ -37,7 +37,7 @@ setup(
         'setuptools-markdown',
     ],
     tests_require=tests_require,
-    packages=['padsniff'],
+    packages=find_packages(),
     entry_points={
         'console_scripts': [
             'padsniff = padsniff.cli:cli'
