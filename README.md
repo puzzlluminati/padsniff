@@ -75,7 +75,7 @@ Padsniff depends on mitmproxy's transparent proxying capabilites. Follow their [
 ### Development
 
 ```shell
-$ git clone git@bitbucket.org:necromanteion/padsniff.git padsniff
+$ git clone git@gitlab.com:wmedlar/padsniff.git
 $ cd padsniff
 $ pip install -r dev-requirements.txt -e .
 ```
