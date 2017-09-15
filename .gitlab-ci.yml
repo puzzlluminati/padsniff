@@ -17,13 +17,13 @@ cache:
 build:
   stage: build
   script:
-    - apk add --no-cache g++ libffi libffi-dev libstdc++ make openssl openssl-dev
+    - apk add --no-cache g++ libffi-dev libstdc++ openssl-dev
     - pip wheel -r requirements.txt -f "$WHEELHOUSE" -w "$WHEELHOUSE"
 
 test:
   stage: test
   before_script:
-    - apk add --no-cache libffi libstdc++ openssl
+    - apk add --no-cache libffi libstdc++ openssl make
     - pip install -r requirements.txt --no-index -f "$WHEELHOUSE"
   script: make test
 
