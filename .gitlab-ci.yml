@@ -1,25 +1,30 @@
 image: python:3.6-alpine
 
 stages:
+  - build
   - test
   - publish
 
 variables:
-  PIP_CACHE_DIR: vendor/pip
+  LDFLAGS: -L/lib
+  WHEELHOUSE: vendor/pip/wheels
 
 cache:
   key: "$CI_COMMIT_REF_NAME"
   paths:
-    - "$PIP_CACHE_DIR"
+    - "$WHEELHOUSE"
 
-.setup: &setup
-  before_script:
+build:
+  stage: build
+  script:
     - apk add --no-cache g++ libffi libffi-dev libstdc++ make openssl openssl-dev
-    - LDFLAGS=-L/lib make install
+    - pip wheel -r requirements.txt -f "$WHEELHOUSE" -w "$WHEELHOUSE"
 
 test:
   stage: test
-  <<: *setup
+  before_script:
+    - apk add --no-cache libffi libstdc++ openssl
+    - pip install -r requirements.txt --no-index -f "$WHEELHOUSE"
   script: make test
 
 .publish: &publish
