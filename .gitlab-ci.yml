@@ -48,7 +48,6 @@ publish-branch:
   only:
     - master
     - develop
-    - gitlab-migration
 
 publish-latest:
   stage: publish
