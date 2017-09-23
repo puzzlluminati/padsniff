@@ -1,7 +1,7 @@
 # Padsniff: A Puzzle & Dragons HTTP Sniffer
 ---------------
 
-[![PyPI](https://img.shields.io/pypi/v/padsniff.svg?style=flat-square)](https://pypi.python.org/pypi/padsniff)[![CircleCI](https://img.shields.io/circleci/project/bitbucket/necromanteion/padsniff.svg?style=flat-square)](https://circleci.com/bb/necromanteion/padsniff)
+[![PyPI](https://img.shields.io/pypi/v/padsniff.svg?style=flat-square)](https://pypi.python.org/pypi/padsniff)[![CI](https://gitlab.com/wmedlar/padsniff/badges/develop/pipeline.svg)](https://gitlab.com/wmedlar/padsniff/pipelines)
 
 ## Quickstart
 
