@@ -1,7 +1,7 @@
 # Padsniff: A Puzzle & Dragons HTTP Sniffer
 ---------------
 
-[![PyPI](https://img.shields.io/pypi/v/padsniff.svg?style=flat-square)](https://pypi.python.org/pypi/padsniff)[![CircleCI](https://img.shields.io/circleci/project/bitbucket/necromanteion/padsniff.svg?style=flat-square)](https://circleci.com/bb/necromanteion/padsniff)
+[![PyPI](https://img.shields.io/pypi/v/padsniff.svg?style=flat-square)](https://pypi.python.org/pypi/padsniff)[![CI](https://gitlab.com/wmedlar/padsniff/badges/develop/pipeline.svg)](https://gitlab.com/wmedlar/padsniff/pipelines)
 
 ## Quickstart
 
@@ -75,7 +75,7 @@ Padsniff depends on mitmproxy's transparent proxying capabilites. Follow their [
 ### Development
 
 ```shell
-$ git clone git@bitbucket.org:necromanteion/padsniff.git padsniff
+$ git clone git@gitlab.com:wmedlar/padsniff.git
 $ cd padsniff
 $ pip install -r dev-requirements.txt -e .
 ```

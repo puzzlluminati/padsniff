@@ -11,9 +11,9 @@ setup(
     version='1.1.0',
     description='Command-line tool to sniff Puzzle & Dragons data.',
     long_description_markdown_filename='README.md',
-    url='https://bitbucket.org/necromanteion/padsniff',
+    url='https://gitlab.com/wmedlar/padsniff',
     author='Will Medlar',
-    author_email='wmmedlar@gmail.com',
+    author_email='will.medlar@gmail.com',
     license='MIT',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
