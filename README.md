@@ -80,13 +80,16 @@ There is a fix, described below; *unfortunately it requires root access*.
 
 - Find your root CA certificate (default: `~/.mitmproxy/mitmproxy-ca.pem`).
 - Compute the legacy hash of the file.
+
 ```shell
 $ # openssl version >= 1.0.0
 $ HASH=$(openssl x509 -inform PEM -subject_hash_old -in "$MITMPROXY_CA" | head -1)
 $ # < 1.0.0
 $ HASH=$(openssl x509 -inform PEM -subject_hash -in "$MITMPROXY_CA" | head -1)
 ```
+
 - Copy the cert to your device at `/system/etc/security/cacerts/${HASH}.0` and set permissions to `644`. You can do this with a file manager with root access on your device, or through `adb`.
+
 ```shell
 $ sudo adb start-server
 * daemon not running. starting it now on port 5037 *
@@ -105,6 +108,7 @@ device:/ # mount -o remount,ro /system
 device:/ # exit
 device:/ $ exit
 ```
+
 - Reboot your device and confirm the certificate is installed under Settings > Security > Trusted Credentials > System. If using the default it will be named simply "mitmproxy".
 
 You should now be able to sniff traffic to and from PAD with no trouble.
