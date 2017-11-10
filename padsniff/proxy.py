@@ -6,6 +6,7 @@ from mitmproxy.master import Master as FlowMaster
 from mitmproxy.options import Options
 from mitmproxy.proxy import ProxyConfig, ProxyServer
 
+from .certs import generate_cert_files
 from .constants import ALL, CADIR, DEFAULT_ORG, GUNGHO_API_ENDPOINT, GUNGHO_USER_AGENT
 from .structures import CaseInsensitiveDefaultDict
 from .parallel import parallelize
@@ -38,8 +39,18 @@ class Proxy(BaseProxy):
 
     handlers = CaseInsensitiveDefaultDict(set)
 
-    def __init__(self, host='0.0.0.0', port=8080):
-        super().__init__(listen_host=host, listen_port=port, mode='transparent')
+    def __init__(self, host='0.0.0.0', port=8080, *, cadir=CADIR):
+        # generate certs before initializing to avoid mitmproxy's default cert generation
+        # if the specified directory doesn't exist
+        generate_cert_files(cadir)
+
+        # expanding the directory path prevents mitmproxy from treating directory paths
+        # not suffixed with a `/` as files, thanks to os.path.dirname, and regenerating
+        # certs when it can't find them in the specified directory's parent directory
+        cadir = Path(cadir).expanduser().resolve()
+
+        super().__init__(listen_host=host, listen_port=port, cadir=str(cadir), mode='transparent')
+
         self.handlers = type(self).handlers.copy()
 
 

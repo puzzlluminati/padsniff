@@ -61,16 +61,13 @@ def certs(directory, org, cn, exp, overwrite, quiet):
               help='Load a Python script containing a callback. Can be supplied multiple times.')
 @click.option('--verbose', '-v', 'verbosity', count=True,
               help='Increase logging level (default: ERROR). Can be supplied multiple times.')
-@click.pass_context
-def run(ctx, cadir, port, scripts, verbosity):
+def run(cadir, port, scripts, verbosity):
     """Run the proxy service."""
-    # create certs if they don't already exist
-    ctx.invoke(certs, directory=cadir, quiet=True)
     configure_logging(verbosity)
 
     # load scripts before instantiating the proxy to allow the use of the `on` decorator
     for path in scripts:
         load_script(path)
 
-    proxy = Proxy(host='0.0.0.0', port=port)
+    proxy = Proxy(host='0.0.0.0', port=port, cadir=cadir)
     proxy.run()
