@@ -48,6 +48,7 @@ class Proxy(BaseProxy):
         # not suffixed with a `/` as files, thanks to os.path.dirname, and regenerating
         # certs when it can't find them in the specified directory's parent directory
         cadir = Path(cadir).expanduser().resolve()
+        logging.info('Using certificate from %s.', cadir)
 
         super().__init__(listen_host=host, listen_port=port, cadir=str(cadir), mode='transparent')
 

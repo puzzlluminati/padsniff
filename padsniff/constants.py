@@ -2,7 +2,7 @@ from mitmproxy.certs import DEFAULT_EXP
 
 ALL = '*'
 
-CADIR = '~/padsniff'
+CADIR = '~/.padsniff'
 DEFAULT_CN = 'Puzzle & Dragons HTTP Sniffer'
 DEFAULT_ORG = 'padsniff'
 
