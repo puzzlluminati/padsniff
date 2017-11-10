@@ -74,7 +74,7 @@ Padsniff depends on mitmproxy's transparent proxying capabilites. Follow their [
 
 ### A Note on Android 7.0+
 
-Prior to Android 7.0 (Nougat), apps would trust both the user-supplied and system certificate stores. Nougat introduced a breaking change to apps' default network security config to only trust the system certificate store. Unfortunately many apps, PAD included, don't modify this default behavior, and as of PAD v12.2 the target SDK version has been bumped to 24 (7.0 Nougat), breaking standard `padsniff` setups that depend on the `mitmproxy`'s user-installed, fake CA. Android devices below version 7.0 are not subject to this behavior.
+Prior to Android 7.0 (Nougat), apps would trust both the user-supplied and system certificate stores. Nougat introduced a breaking change to apps' default network security config to only trust the system certificate store. Unfortunately many apps, PAD included, don't modify this default behavior, and as of PAD v12.2 the target SDK version has been bumped to 24 (7.0 Nougat), breaking standard `padsniff` setups that depend on `mitmproxy`'s user-installed, fake CA. Android devices below version 7.0 are not subject to this behavior.
 
 There is a fix, described below; *unfortunately it requires root access*.
 
