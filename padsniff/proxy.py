@@ -1,11 +1,12 @@
 import logging
+from pathlib import Path
 
 from mitmproxy.controller import handler as flow_handler
 from mitmproxy.master import Master as FlowMaster
 from mitmproxy.options import Options
 from mitmproxy.proxy import ProxyConfig, ProxyServer
 
-from .constants import ALL, GUNGHO_API_ENDPOINT, GUNGHO_USER_AGENT
+from .constants import ALL, CADIR, DEFAULT_ORG, GUNGHO_API_ENDPOINT, GUNGHO_USER_AGENT
 from .structures import CaseInsensitiveDefaultDict
 from .parallel import parallelize
 
@@ -98,3 +99,14 @@ def on(action, *, blocking=False, cls=Proxy):
     a `Proxy` object.
     """
     return cls.on(cls, action, blocking=blocking)
+
+
+def patch_mitmproxy_certfile_prefix():
+    """
+    Patch mitmproxy to search for certificates prefixed with 'padsniff' instead of 'mitmproxy'.
+
+    Unfortunately this isn't parameterized in mitmproxy. See:
+    https://github.com/mitmproxy/mitmproxy/blob/3d4d580975731215d58a629755e94b5913e67dc3/mitmproxy/proxy/config.py#L95-L98
+    """
+    import mitmproxy.proxy.config
+    mitmproxy.proxy.config.CONF_BASENAME = DEFAULT_ORG
