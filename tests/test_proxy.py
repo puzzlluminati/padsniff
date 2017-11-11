@@ -1,6 +1,8 @@
-from padsniff import constants, is_gungho, on, parallelize, Proxy
+from unittest.mock import patch
 
 from pytest import fixture
+
+from padsniff import constants, is_gungho, on, parallelize, Proxy
 
 
 @fixture(autouse=True)
@@ -14,8 +16,12 @@ class TestProxy:
 
     def test_init(self):
         """Test initialization of Proxy instance with custom options."""
-        host, port = '1.2.3.4', 12345
-        proxy = Proxy(host=host, port=port)
+        host, port, cadir = '1.2.3.4', 12345, '~/.padsniff'
+
+        with patch('padsniff.proxy.generate_cert_files') as mocked:
+            proxy = Proxy(host=host, port=port, cadir=cadir)
+
+        assert mocked.called_once_with(cadir)
 
         # test that parent class initializes with proper arguments
         assert proxy.options.listen_host == host
