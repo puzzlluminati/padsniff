@@ -1,0 +1,10 @@
+*
+!examples/
+!padsniff/
+!tests
+!*requirements.txt
+!LICENSE
+!README.md
+!setup.*
+
+**/__pycache__/

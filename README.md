@@ -1,7 +1,6 @@
 # Padsniff: A Puzzle & Dragons HTTP Sniffer
----------------
 
-[![PyPI](https://img.shields.io/pypi/v/padsniff.svg?style=flat-square)](https://pypi.python.org/pypi/padsniff)[![CircleCI](https://img.shields.io/circleci/project/bitbucket/necromanteion/padsniff.svg?style=flat-square)](https://circleci.com/bb/necromanteion/padsniff)
+[![PyPI](https://img.shields.io/pypi/v/padsniff.svg?style=flat-square)](https://pypi.python.org/pypi/padsniff)[![CI](https://gitlab.com/wmedlar/padsniff/badges/develop/pipeline.svg)](https://gitlab.com/wmedlar/padsniff/pipelines)
 
 ## Quickstart
 
@@ -33,7 +32,7 @@ if __name__ == '__main__':
     proxy.run()
 ```
 
-Check out the [examples](examples/) for more cool ideas.
+See the [device setup guide](docs/device-setup.md) to learn how to set up your phone to proxy through padsniff, and the [usage guide](docs/usage.md) for more advanced usage.
 
 ## Installation
 
@@ -56,7 +55,7 @@ $ export ARCHFLAGS="-arch x86_64" LDFLAGS="-L/usr/local/opt/openssl/lib" CFLAGS=
 $ pip install padsniff
 ```
 
-Padsniff depends on mitmproxy's transparent proxying capabilities. Follow their [instructions](http://docs.mitmproxy.org/en/stable/transparent/osx.html) to set up your device.
+Padsniff depends on mitmproxy's transparent proxying capabilities. Follow their [instructions](http://docs.mitmproxy.org/en/stable/transparent/osx.html) to set up your computer for proxying.
 
 ### Debian / Ubuntu
 
@@ -70,12 +69,12 @@ $ pip install padsniff
 
 This will also set up your environment to support [click](http://click.pocoo.org/), the library that powers padsniff's command line interface.
 
-Padsniff depends on mitmproxy's transparent proxying capabilites. Follow their [instructions](http://docs.mitmproxy.org/en/stable/transparent/linux.html) to set up your device.
+Padsniff depends on mitmproxy's transparent proxying capabilites. Follow their [instructions](http://docs.mitmproxy.org/en/stable/transparent/linux.html) to set up your computer for proxying.
 
 ### Development
 
 ```shell
-$ git clone git@bitbucket.org:necromanteion/padsniff.git padsniff
+$ git clone git@gitlab.com:wmedlar/padsniff.git
 $ cd padsniff
 $ pip install -r dev-requirements.txt -e .
 ```
