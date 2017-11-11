@@ -2,3 +2,5 @@ include *.cfg
 include *.txt
 include README.md
 recursive-include examples *.py
+recursive-include docs *.md
+recursive-include tests *.py
