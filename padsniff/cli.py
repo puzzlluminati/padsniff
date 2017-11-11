@@ -12,7 +12,7 @@ log = logging.getLogger(__name__)
 
 
 def configure_logging(verbosity):
-    level = logging.ERROR - verbosity * 10
+    level = logging.WARNING - verbosity * 10
     logging.basicConfig(format='[%(levelname)s] :: %(message)s', level=level)
 
 
