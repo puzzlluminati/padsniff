@@ -8,7 +8,7 @@ with open('dev-requirements.txt') as f:
 
 setup(
     name='padsniff',
-    version='1.2.0',
+    version='1.2.1',
     description='Command-line tool to sniff Puzzle & Dragons data.',
     long_description_markdown_filename='README.md',
     url='https://gitlab.com/wmedlar/padsniff',
