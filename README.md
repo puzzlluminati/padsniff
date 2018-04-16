@@ -2,6 +2,8 @@
 
 [![PyPI](https://img.shields.io/pypi/v/padsniff.svg?style=flat-square)](https://pypi.python.org/pypi/padsniff)[![CI](https://gitlab.com/wmedlar/padsniff/badges/develop/pipeline.svg)](https://gitlab.com/wmedlar/padsniff/pipelines)
 
+**This project was donated by wmedlar, and is undergoing migration from his ownership. You can track the progress of the migration in the [Ownership Migration milestone](https://github.com/puzzlluminati/padsniff/milestone/1).**
+
 ## Quickstart
 
 ```shell
