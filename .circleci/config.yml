@@ -44,4 +44,9 @@ workflows:
       - release:
           requires: ["hold"]
           context: pypi-testing
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
 
