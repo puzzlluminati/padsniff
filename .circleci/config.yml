@@ -1,0 +1,47 @@
+version: 2
+
+jobs:
+  test:
+    docker:
+      - image: python:3.6-alpine
+        environment:
+          LDFLAGS: -L/lib
+          WHEELHOUSE: vendor/pip/wheels
+    steps:
+      - checkout
+      - run: apk add --no-cache g++ libffi-dev libstdc++ make openssl-dev
+      - restore_cache:
+          key: v1-requirements-{{ checksum "requirements.txt" }}
+      - run: pip wheel -r requirements.txt -f "$WHEELHOUSE" -w "$WHEELHOUSE"
+      - save_cache:
+          key: v1-requirements-{{ checksum "requirements.txt" }}
+          paths: ["vendor/pip/wheels"]
+      - run: pip install -r requirements.txt --no-index -f "$WHEELHOUSE"
+      - run: make test
+
+  release:
+    docker:
+      - image: python:3.6-alpine
+    steps:
+      - checkout
+      - run: pip install twine wheel
+      - run: apk add --no-cache make
+      - run: make publish VERSION="$CIRCLE_TAG" REVISION="$CIRCLE_SHA1"
+
+workflows:
+  version: 2
+  workflow:
+    jobs:
+      - test
+      - hold:
+          type: approval
+          requires: ["test"]
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
+      - release:
+          requires: ["hold"]
+          context: pypi-testing
+
