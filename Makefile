@@ -3,7 +3,7 @@ VERSION ?= $(shell git describe --tags --abbrev=0)
 REVISION ?= $(shell git rev-parse HEAD)
 
 # strip leading v on version, e.g., v1.2.3 -> 1.2.3
-VERSION = $(VERSION:v%=%)
+CLEANVERSION := $(VERSION:v%=%)
 
 SDIST := "dist/$(PACKAGE)-$(VERSION).tar.gz"
 WHEEL := "dist/$(PACKAGE)-$(VERSION)-py3-none-any.whl"
@@ -57,7 +57,7 @@ test:
 
 .PHONY: update-meta
 update-meta:
-	sed -i .bak -e "s,\(version =\) '\(.*\)',\1 '$(VERSION)'," -e "s,\(revision =\) '\(.*\)',\1 '$(REVISION)'," padsniff/meta.py
+	sed -i .bak -e "s,\(version =\) '\(.*\)',\1 '$(CLEANVERSION)'," -e "s,\(revision =\) '\(.*\)',\1 '$(REVISION)'," padsniff/meta.py
 
 .PHONY: wheel
 wheel: $(WHEEL)
