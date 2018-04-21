@@ -1,6 +1,9 @@
 include *.cfg
 include *.txt
+include .dockerignore
+include Dockerfile
+include Makefile
 include README.md
-recursive-include examples *.py
 recursive-include docs *.md
+recursive-include examples *.py
 recursive-include tests *.py

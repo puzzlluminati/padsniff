@@ -1,3 +1,4 @@
+from runpy import run_path
 from setuptools import find_packages, setup
 
 with open('requirements.txt') as f:
@@ -8,12 +9,12 @@ with open('dev-requirements.txt') as f:
 
 setup(
     name='padsniff',
-    version='1.2.1',
+    packages=find_packages(),
+    version=run_path('padsniff/meta.py').get('version'),
     description='Command-line tool to sniff Puzzle & Dragons data.',
-    long_description_markdown_filename='README.md',
-    url='https://gitlab.com/wmedlar/padsniff',
-    author='Will Medlar',
-    author_email='will.medlar@gmail.com',
+    url='https://github.com/puzzlluminati/padsniff',
+    author='Puzzlluminati',
+    author_email='puzzlluminati@gmail.com',
     license='MIT',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
@@ -30,14 +31,12 @@ setup(
         'man-in-the-middle',
         'reverse engineering',
     ],
-    install_requires=install_requires,
     setup_requires=[
-        'pypandoc',
         'pytest-runner',
-        'setuptools-markdown',
     ],
+    python_requires='>=3',
+    install_requires=install_requires,
     tests_require=tests_require,
-    packages=find_packages(),
     entry_points={
         'console_scripts': [
             'padsniff = padsniff.cli:cli'
