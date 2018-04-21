@@ -2,6 +2,9 @@ PACKAGE := padsniff
 VERSION ?= $(shell git describe --tags --abbrev=0)
 REVISION ?= $(shell git rev-parse HEAD)
 
+# strip leading v on version, e.g., v1.2.3 -> 1.2.3
+VERSION = $(VERSION:v%=%)
+
 SDIST := "dist/$(PACKAGE)-$(VERSION).tar.gz"
 WHEEL := "dist/$(PACKAGE)-$(VERSION)-py3-none-any.whl"
 
