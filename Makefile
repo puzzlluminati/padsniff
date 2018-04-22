@@ -7,6 +7,7 @@ CLEANVERSION := $(VERSION:v%=%)
 
 SDIST := "dist/$(PACKAGE)-$(VERSION).tar.gz"
 WHEEL := "dist/$(PACKAGE)-$(VERSION)-py3-none-any.whl"
+INSTALLEDPACKAGES := $(shell pip list)
 
 .DEFAULT: help
 .PHONY: help
@@ -45,8 +46,11 @@ package: update-meta sdist wheel
 
 .PHONY: publish
 publish: package
-	pip list | grep -qF twine || $(error the twine library is required to upload package distributions, install it with "pip install twine")
+ifeq (,$(findstring twine,$(INSTALLEDPACKAGES)))
+	$(error the twine library is required to upload package distributions, install it with "pip install twine")
+else
 	twine upload $(SDIST) $(WHEEL)
+endif
 
 .PHONY: sdist
 sdist: $(SDIST)
@@ -66,5 +70,8 @@ $(SDIST):
 	python setup.py sdist
 
 $(WHEEL):
-	pip list | grep -qF wheel || $(error the wheel library is required to build a binary wheel, install it with "pip install wheel")
+ifeq (,$(findstring wheel,$(INSTALLEDPACKAGES)))
+	$(error the wheel library is required to build a binary wheel, install it with "pip install wheel")
+else
 	python setup.py bdist_wheel
+endif
