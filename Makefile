@@ -57,7 +57,7 @@ test:
 
 .PHONY: update-meta
 update-meta:
-	sed -i .bak -e "s,\(version =\) '\(.*\)',\1 '$(CLEANVERSION)'," -e "s,\(revision =\) '\(.*\)',\1 '$(REVISION)'," padsniff/meta.py
+	sed -i.bak -e "s,\(version =\) '\(.*\)',\1 '$(CLEANVERSION)'," -e "s,\(revision =\) '\(.*\)',\1 '$(REVISION)'," padsniff/meta.py
 
 .PHONY: wheel
 wheel: $(WHEEL)
