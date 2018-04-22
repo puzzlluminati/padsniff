@@ -2,11 +2,12 @@ PACKAGE := padsniff
 VERSION ?= $(shell git describe --tags --abbrev=0)
 REVISION ?= $(shell git rev-parse HEAD)
 
-# strip leading v on version, e.g., v1.2.3 -> 1.2.3
-CLEANVERSION := $(VERSION:v%=%)
+# setuptools normalizes the version (e.g., v1.2.3-beta -> 1.2.3b0)
+# the normalized version is what our files will be named after
+CLEANVERSION := $(shell python -c "from pkg_resources.extern.packaging.version import Version; print(Version('$(VERSION)'))")
 
-SDIST := "dist/$(PACKAGE)-$(VERSION).tar.gz"
-WHEEL := "dist/$(PACKAGE)-$(VERSION)-py3-none-any.whl"
+SDIST := "dist/$(PACKAGE)-$(CLEANVERSION).tar.gz"
+WHEEL := "dist/$(PACKAGE)-$(CLEANVERSION)-py3-none-any.whl"
 INSTALLEDPACKAGES := $(shell pip list)
 
 .DEFAULT: help
