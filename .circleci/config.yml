@@ -28,25 +28,27 @@ jobs:
       - run: apk add --no-cache make
       - run: make publish VERSION="$CIRCLE_TAG" REVISION="$CIRCLE_SHA1"
 
+.version-tags-only: &version-tags-only
+  filters:
+    branches:
+      ignore: /.*/
+    tags:
+      only: /^v.*/
+
 workflows:
   version: 2
-  workflow:
+  test-commit:
     jobs:
       - test
+  test-and-release-tag:
+    jobs:
+      - test:
+          <<: *version-tags-only
       - hold:
-          type: approval
           requires: ["test"]
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v.*/
+          type: approval
+          <<: *version-tags-only
       - release:
           requires: ["hold"]
           context: pypi-testing
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v.*/
-
+          <<: *version-tags-only
