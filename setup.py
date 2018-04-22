@@ -1,6 +1,9 @@
 from runpy import run_path
 from setuptools import find_packages, setup
 
+with open('README.md') as f:
+    long_description = f.read()
+
 with open('requirements.txt') as f:
     install_requires = f.readlines()
 
@@ -12,6 +15,8 @@ setup(
     packages=find_packages(),
     version=run_path('padsniff/meta.py').get('version'),
     description='Command-line tool to sniff Puzzle & Dragons data.',
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     url='https://github.com/puzzlluminati/padsniff',
     author='Puzzlluminati',
     author_email='puzzlluminati@gmail.com',
