@@ -50,5 +50,5 @@ workflows:
           <<: *version-tags-only
       - release:
           requires: ["hold"]
-          context: pypi-testing
+          context: pypi-production
           <<: *version-tags-only
